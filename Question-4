@@ -1,0 +1,52 @@
+class Solution {
+    public int singleNonDuplicate(int[] nums) 
+    {
+        if((nums.length)%2==0) return -1;
+        if(nums.length==1) return nums[0];
+        int lo=0;
+        int hi=nums.length-1;
+        int ans=-1;
+        while(lo<=hi)
+        {
+            int mid=(lo+hi)/2;
+            if(mid!=0 && mid!=nums.length-1 && nums[mid]!=nums[mid-1] && nums[mid]!=nums[mid+1])
+            {
+                return nums[mid];
+            }
+            else if(mid==0 && nums[mid]!=nums[mid+1]) return nums[mid];
+            else if(mid==nums.length-1 && nums[mid]!=nums[mid-1]) return nums[mid];
+            // case when mid element and its left equal consider elements from mid-1 to hi
+            // if odd then set lo to mid+1 range mid+1->hi
+            // if even then no answer in part mid-1 to hi potenial answer in hi to mid-2 lo->mid-2
+            else if(nums[mid]==nums[mid-1])
+            {
+                int li=mid-1;
+                int ne=hi-li+1;
+                if(ne%2==0)
+                {
+                    hi=mid-2;
+                }
+                else
+                {
+                    lo=mid+1;
+                }
+            }
+        // case when mid element and its right equal consider elements from mid  to hi
+        // if odd then set lo to mid+2  answer in range mid+2->hi
+        // if even then no answer in part mid to hi set hi=mid-1 potenial answer in range lo to mid-1 
+            else if(nums[mid]==nums[mid+1])
+            {
+                int ne=hi-mid+1;
+                if(ne%2==1)
+                {
+                    lo=mid+2;
+                }
+                else
+                {
+                    hi=mid-1;
+                }
+            }
+        }
+        return -1;
+    }
+    }
